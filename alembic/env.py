@@ -13,8 +13,8 @@ config = Config(RepositoryEnv(env_path))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # Імпортуємо Base та моделі
-from database import Base
-from models import User, PostSearch
+from backend.database import Base
+from backend.models import User, PostSearch
 
 
 config = context.config
