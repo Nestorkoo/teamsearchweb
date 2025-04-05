@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional
 
 class UserBase(BaseModel):
@@ -9,12 +9,16 @@ class UserBase(BaseModel):
     interests: Optional[str] = None
     bio: Optional[str] = None
     location: Optional[str] = None
-    age: Optional[int] = None
+    age: int = Field(..., ge=16, le=100, description="Age must be between 0 and 100")
     gender: Optional[str] = None
 
 class UserCreate(UserBase):
-    password: str  # Пароль тільки при створенні
+    password: str
 
+class UserLogin(BaseModel):
+    username: str
+    password: str
+    
 class UserResponse(UserBase):
     id: int
 

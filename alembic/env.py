@@ -5,16 +5,19 @@ from alembic import context
 import os
 import sys
 from decouple import config, Config, RepositoryEnv
+from backend.models import Base
+from backend.config import DATABASE_URL
 
-env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-config = Config(RepositoryEnv(env_path))
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
 
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+env_path = os.path.join(os.path.dirname(__file__), "..", "config","dev.env")
+config = Config(RepositoryEnv(env_path))
+
 # Імпортуємо Base та моделі
-from backend.database import Base
-from backend.models import User, PostSearch
 
 
 config = context.config
@@ -24,8 +27,7 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-# URL підключення до бази даних
-DATABASE_URL = os.getenv("DATABASE_URL", f"postgresql+asyncpg://{config('DB_USERNAME')}:{config("DB_PASSWORD")}5@{config('DB_HOST')}:{config('DB_PORT')}/{config("DB_NAME")}")
+
 
 def run_migrations_offline():
     """Режим офлайн: генерація SQL скриптів без підключення до БД."""
