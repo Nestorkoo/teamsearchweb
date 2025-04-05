@@ -1,11 +1,17 @@
 from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy import Column, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    Column, 
+    ForeignKey, 
+    Integer, 
+    String,
+    Text
+)
 
 class Base(DeclarativeBase):
     pass
 
 
-class User(Base):
+class UserModel(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -19,19 +25,19 @@ class User(Base):
     location = Column(String)
     age = Column(Integer)
     gender = Column(String)
-    messages = relationship("Message", back_populates="user")
-    posts = relationship("PostSearch", back_populates="creator")
+    messages = relationship("MessageModel", back_populates="user")
+    posts = relationship("PostSearchModel", back_populates="creator")
 
-class Message(Base):
+class MessageModel(Base):
     __tablename__ = 'messages'
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     content = Column(Text)
 
-    user = relationship("User", back_populates="messages")
+    user = relationship("UserModel", back_populates="messages")
     
-class PostSearch(Base):
+class PostSearchModel(Base):
     __tablename__ = 'post_search'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -42,5 +48,5 @@ class PostSearch(Base):
     interests = Column(Text)
     creator_id = Column(Integer, ForeignKey('users.id'))
 
-    creator = relationship("User", back_populates="posts")
+    creator = relationship("UserModel", back_populates="posts")
     
